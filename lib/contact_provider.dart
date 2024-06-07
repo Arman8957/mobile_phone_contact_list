@@ -15,4 +15,10 @@ class ContactProvider with ChangeNotifier {
     _contacts.removeAt(index);
     notifyListeners();
   }
+
+  void editContact(int index, String name, String number) {
+    _contacts[index].name = name;
+    _contacts[index].number = number;
+    notifyListeners();
+  }
 }

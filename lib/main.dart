@@ -28,7 +28,10 @@ class ContactListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Contact List')),
+      appBar: AppBar(
+        title: Text('Contact List'),
+        backgroundColor: Colors.grey[700], // Header color
+      ),
       body: Column(
         children: [
           Padding(
@@ -37,12 +40,24 @@ class ContactListScreen extends StatelessWidget {
               children: [
                 TextField(
                   controller: nameController,
-                  decoration: InputDecoration(labelText: 'Name'),
+                  decoration: InputDecoration(
+                    labelText: 'Name',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
                 ),
+                SizedBox(height: 10),
                 TextField(
                   controller: numberController,
-                  decoration: InputDecoration(labelText: 'Number'),
+                  decoration: InputDecoration(
+                    labelText: 'Number',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
                 ),
+                SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
                     final name = nameController.text;
@@ -55,6 +70,12 @@ class ContactListScreen extends StatelessWidget {
                       numberController.clear();
                     }
                   },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.grey[700], // Button color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
                   child: Text('Add'),
                 ),
               ],
@@ -96,7 +117,90 @@ class ContactListScreen extends StatelessWidget {
                       child: ListTile(
                         title: Text(contact.name),
                         subtitle: Text(contact.number),
-                        trailing: Icon(Icons.phone),
+                        trailing: PopupMenuButton<String>(
+                          onSelected: (value) {
+                            if (value == 'Edit') {
+                              nameController.text = contact.name;
+                              numberController.text = contact.number;
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text('Edit Contact'),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      TextField(
+                                        controller: nameController,
+                                        decoration: InputDecoration(
+                                          labelText: 'Name',
+                                        ),
+                                      ),
+                                      TextField(
+                                        controller: numberController,
+                                        decoration: InputDecoration(
+                                          labelText: 'Number',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        if (nameController.text.isNotEmpty &&
+                                            numberController.text.isNotEmpty) {
+                                          Provider.of<ContactProvider>(context, listen: false)
+                                              .editContact(index, nameController.text, numberController.text);
+                                          Navigator.of(context).pop();
+                                        }
+                                      },
+                                      child: Text('Save'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            } else if (value == 'Delete') {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: Text('Delete Contact'),
+                                  content: Text('Are you sure you want to delete ${contact.name}?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Provider.of<ContactProvider>(context, listen: false)
+                                            .deleteContact(index);
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('Delete'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                          },
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              value: 'Edit',
+                              child: Text('Edit'),
+                            ),
+                            PopupMenuItem(
+                              value: 'Delete',
+                              child: Text('Delete'),
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },
