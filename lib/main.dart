@@ -29,8 +29,9 @@ class ContactListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Contact List'),
-        backgroundColor: Colors.grey[700], // Header color
+        title: Text('Contact List', style: TextStyle(color: Colors.white),),
+        centerTitle: true,
+        backgroundColor: Colors.grey[800], // Header color
       ),
       body: Column(
         children: [
@@ -57,8 +58,9 @@ class ContactListScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 10, width: double.infinity,),
                 ElevatedButton(
+
                   onPressed: () {
                     final name = nameController.text;
                     final number = numberController.text;
@@ -71,12 +73,13 @@ class ContactListScreen extends StatelessWidget {
                     }
                   },
                   style: ElevatedButton.styleFrom(
+
                     backgroundColor: Colors.grey[700], // Button color
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  child: Text('Add'),
+                  child: Text('Add', style: TextStyle(color: Colors.white),),
                 ),
               ],
             ),
