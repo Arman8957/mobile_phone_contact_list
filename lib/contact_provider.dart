@@ -10,7 +10,7 @@ class ContactProvider with ChangeNotifier {
     _contacts.add(contact);
     notifyListeners();
   }
-
+//delete the contact number
   void deleteContact(int index) {
     _contacts.removeAt(index);
     notifyListeners();
