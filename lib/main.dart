@@ -172,7 +172,7 @@ class ContactListScreen extends StatelessWidget {
                                 context: context,
                                 builder: (context) => AlertDialog(
                                   title: Text('Delete Contact'),
-                                  content: Text('Are you sure you want to delete ${contact.name}?'),
+                                  content: Text('Do you want to change it? ${contact.name}?'),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
